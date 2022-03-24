@@ -1,21 +1,11 @@
-import os
+from secrets import TELEGRAM_TOKEN, TOKEN
 
 import requests
-from dotenv import load_dotenv
-
-from bot import send_message
-
-load_dotenv()
+import telegram
 
 ENDPOINT = "https://dvmn.org/api/long_polling/"
-TOKEN = os.environ.get("DEVMAN_TOKEN")
 
-
-def homework_status(status):
-    """Возвращает статус проверки работы в словах."""
-    if status:
-        return "Работа нуждается в доработке."
-    return "Работа сдана!"
+bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 
 timestamp = 0
@@ -32,11 +22,11 @@ def get_status_homework(endpoint, student_name, chat_id):
 
         if data["status"] == "found":
             lesson_title = data["new_attempts"][0]["lesson_title"]
-            is_negative = homework_status(data["new_attempts"][0]["is_negative"])
+            is_negative = "Работа нуждается в доработке." if data["new_attempts"][0]["is_negative"] else "Работа сдана!"
             lesson_url = data["new_attempts"][0]["lesson_url"]
             name = student_name
             text = f"{name}, урок '{lesson_title}' проверен. {is_negative} Ссылка на урок - {lesson_url}"
-            send_message(chat_id=chat_id, text=text)
+            bot.sendMessage(chat_id=chat_id, text=text)
     except requests.exceptions.ReadTimeout as time_out_error:
         print(time_out_error)
     except requests.exceptions.ConnectionError:
@@ -44,6 +34,7 @@ def get_status_homework(endpoint, student_name, chat_id):
 
 
 if __name__ == "__main__":
+
     student_name = input("Введите Ваше имя: \n")
     chat_id = input("Введите Ваш chat_id: \n")
     while True:
