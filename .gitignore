@@ -50,6 +50,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.pytest_cache/
 
 # Translations
 *.mo
@@ -131,3 +132,6 @@ dmypy.json
 # PyCharn settings
 .idea/
 .idea
+
+# script log
+.bot_chat.log
