@@ -28,3 +28,11 @@ repos:
   hooks:
     - id: black
       args: [--line-length=120]
+- repo: local
+  hooks:
+    - id: export-dev-requirements
+      name: Export DEV requirements.txt
+      language: system
+      pass_filenames: false
+      entry: poetry export --without-hashes --dev --output requirements/dev.txt
+      files: ^(pyproject.toml|poetry.lock)$
