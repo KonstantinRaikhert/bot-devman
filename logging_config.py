@@ -10,9 +10,13 @@ LOGGING_CONFIG = {
             "formatter": "standard",
             "filename": "bot_chat.log",
             "maxBytes": 1024,
-        }
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
     },
     "loggers": {
-        "__main__": {"handlers": ["file"], "level": "INFO", "propagate": False},
+        "__main__": {"handlers": ["file", "console"], "level": "INFO", "propagate": False},
     },
 }
