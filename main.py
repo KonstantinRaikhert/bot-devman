@@ -45,10 +45,10 @@ def get_status_homework(endpoint, devman_token, telegram_bot, student_name, chat
 
 
 def main():
+    load_dotenv()
+
     config.dictConfig(LOGGING_CONFIG)
     logger.info("Запуск приложения.")
-
-    load_dotenv()
 
     telegram_token = os.environ.get("TELEGRAM_TOKEN")
     devman_token = os.environ.get("DEVMAN_TOKEN")
