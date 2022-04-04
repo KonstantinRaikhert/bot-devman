@@ -19,9 +19,7 @@ repos:
   rev: 3.9.2
   hooks:
     - id: flake8
-      args: [--max-line-length=120, --ignore=D100 D103]
-      additional_dependencies:
-        - flake8-docstrings
+      args: [--max-line-length=120]
 
 - repo: https://github.com/ambv/black
   rev: 21.9b0
@@ -34,5 +32,5 @@ repos:
       name: Export DEV requirements.txt
       language: system
       pass_filenames: false
-      entry: poetry export --without-hashes --dev --output requirements/dev.txt
+      entry: poetry export --without-hashes --output requirements.txt
       files: ^(pyproject.toml|poetry.lock)$
