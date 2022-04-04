@@ -23,5 +23,6 @@ LOGGING_CONFIG = {
     },
     "loggers": {
         "__main__": {"handlers": ["file", "console", "telegram"], "level": "INFO", "propagate": False},
+        }
     },
 }
