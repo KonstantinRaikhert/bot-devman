@@ -3,6 +3,7 @@ LOGGING_CONFIG = {
     "disable_existing_loggers": True,
     "formatters": {
         "standard": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
+        "tg_formatter": {"format": "[%(levelname)s] %(name)s: %(message)s"},
     },
     "handlers": {
         "file": {
