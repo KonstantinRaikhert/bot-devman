@@ -12,17 +12,16 @@ LOGGING_CONFIG = {
             "filename": "bot_chat.log",
             "maxBytes": 1024,
         },
-        "telegram": {
-            "class": "logging_telegram_handler.TelegramLogsHandler",
-            "formatter": "tg_formatter",
-        },
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "standard",
         },
     },
     "loggers": {
-        "__main__": {"handlers": ["file", "console", "telegram"], "level": "INFO", "propagate": False},
-        }
+        "__main__": {
+            "handlers": ["file", "console"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }

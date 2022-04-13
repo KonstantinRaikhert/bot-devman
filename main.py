@@ -8,6 +8,7 @@ import telegram
 from dotenv import load_dotenv
 
 from logging_config import LOGGING_CONFIG
+from logging_telegram_handler import TelegramLogsHandler
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,11 @@ def get_status_homework(endpoint, devman_token, telegram_bot, student_name, chat
     while True:
         try:
             payload = {"timestamp": timestamp}
-            response = requests.get(endpoint, headers={"Authorization": devman_token}, params=payload)
+            response = requests.get(
+                endpoint,
+                headers={"Authorization": devman_token},
+                params=payload,
+            )
             response.raise_for_status()
             review_info = response.json()
             status = review_info.get("status")
@@ -32,7 +37,9 @@ def get_status_homework(endpoint, devman_token, telegram_bot, student_name, chat
                 lesson_title = last_attempt["lesson_title"]
                 lesson_url = last_attempt["lesson_url"]
                 is_negative = "Работа нуждается в доработке." if last_attempt["is_negative"] else "Работа сдана!"
-                text = f"{student_name}, урок '{lesson_title}' проверен. {is_negative} Ссылка на урок - {lesson_url}"
+                text = (
+                    f"{student_name}, урок '{lesson_title}' проверен. " f"{is_negative} Ссылка на урок - {lesson_url}"
+                )
                 telegram_bot.sendMessage(chat_id=chat_id, text=text)
 
         except requests.exceptions.HTTPError as http_error:
@@ -47,15 +54,17 @@ def get_status_homework(endpoint, devman_token, telegram_bot, student_name, chat
 def main():
     load_dotenv()
 
-    config.dictConfig(LOGGING_CONFIG)
-    logger.info("Запуск приложения.")
-
     telegram_token = os.environ.get("TELEGRAM_TOKEN")
     devman_token = os.environ.get("DEVMAN_TOKEN")
     telegram_chat_id = os.environ.get("CHAT_ID")
     student_name = os.environ.get("STUDENT_NAME")
 
     telegram_bot = telegram.Bot(token=telegram_token)
+
+    config.dictConfig(LOGGING_CONFIG)
+    logger.addHandler(TelegramLogsHandler(telegram_bot=telegram_bot, telegram_chat_id=telegram_chat_id))
+
+    logger.info("Запуск приложения.")
 
     get_status_homework(
         endpoint=ENDPOINT,
