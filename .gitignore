@@ -129,9 +129,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# PyCharn settings
-.idea/
-.idea
+# VScode
+.vscode
 
 # script log
 .bot_chat.log
